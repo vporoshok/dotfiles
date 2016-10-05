@@ -53,6 +53,8 @@
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git docker docker-compose git-flow golang httpie pass pip pyenv postgres tmux)
 
+fpath=(~/.zsh/completion $fpath)
+autoload -Uz compinit && compinit -i
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -93,10 +95,19 @@ else
 fi
 
 local current_dir='%{$terminfo[bold]$fg[blue]%} %~%{$reset_color%}'
-local current_venv='$(basename "$VIRTUAL_ENV")'
 local git_branch='$(git_prompt_info)%{$reset_color%}'
+if [[ -n $DOCKER_MACHINE_NAME ]]; then
+    local docker_machine='%{$fg[cyan]%}$DOCKER_MACHINE_NAME%{$reset_color%}  '
+else
+    local docker_machine=''
+fi
+if [[ -n $VIRTUAL_ENV ]]; then
+    local current_venv='$(basename "$VIRTUAL_ENV")  '
+else
+    local current_venv=''
+fi
 
-PROMPT="╭─${user_host} ${current_dir} ${git_branch} ${current_venv}
+PROMPT="╭─${user_host} ${current_dir} ${git_branch} ${docker_machine}${current_venv}
 ╰─%B$%b "
 RPS1="${return_code}"
 
