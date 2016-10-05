@@ -7,7 +7,7 @@
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-# ZSH_THEME="bira"
+ZSH_THEME="bira"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -86,6 +86,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+setopt prompt_subst
+
 local return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
 
 if [[ $UID -eq 0 ]]; then
@@ -96,16 +98,14 @@ fi
 
 local current_dir='%{$terminfo[bold]$fg[blue]%} %~%{$reset_color%}'
 local git_branch='$(git_prompt_info)%{$reset_color%}'
-if [[ -n $DOCKER_MACHINE_NAME ]]; then
-    local docker_machine='%{$fg[cyan]%}$DOCKER_MACHINE_NAME%{$reset_color%}  '
-else
-    local docker_machine=''
-fi
-if [[ -n $VIRTUAL_ENV ]]; then
-    local current_venv='$(basename "$VIRTUAL_ENV")  '
-else
-    local current_venv=''
-fi
+function __docker_machine {
+    [ $DOCKER_MACHINE_NAME ] && echo "%{$fg[cyan]%}$DOCKER_MACHINE_NAME%{$reset_color%}  "
+}
+local docker_machine='$(__docker_machine)'
+function __current_venv {
+    [ $VIRTUAL_ENV ] && echo "(`basename $VIRTUAL_ENV`)  "
+}
+local current_venv='$(__current_venv)'
 
 PROMPT="╭─${user_host} ${current_dir} ${git_branch} ${docker_machine}${current_venv}
 ╰─%B$%b "
