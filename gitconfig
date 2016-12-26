@@ -2,7 +2,7 @@
 	email = bastrykov@elewise.com
 	name = Evgeniy Bastrykov
 [push]
-	default = matching
+	default = current
 [alias]
 	co = checkout
 	br = branch
@@ -10,3 +10,10 @@
 	st = status
 	unstage = reset HEAD --
 	last = log -1 HEAD
+	ffs = flow feature start
+	ps = push
+	ffp = flow feature publish
+	fff = flow feature finish
+[core]
+	autocrlf = input
+	excludesfile = /home/vp/.gitignore

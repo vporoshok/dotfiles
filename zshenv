@@ -12,6 +12,7 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export PATH="$PATH:$PYENV_ROOT/bin"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+source /home/vp/.rvm/scripts/rvm
 
 export GPGKEY=BB000FFB
 export GNUPGHOME=~/secrets/gnupg

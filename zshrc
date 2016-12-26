@@ -51,7 +51,7 @@ ZSH_THEME="bira"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker docker-compose git-flow golang httpie pass pip pyenv postgres tmux)
+plugins=(git docker docker-compose git-flow golang httpie ng pass pip pyenv postgres tmux)
 
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit && compinit -i
@@ -113,3 +113,17 @@ RPS1="${return_code}"
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}‹"
 ZSH_THEME_GIT_PROMPT_SUFFIX="› %{$reset_color%}"
+
+NPM_PACKAGES="${HOME}/.npm-packages"
+PATH="$PATH:$NPM_PACKAGES/bin"
+export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+secrets() {
+    truecrypt -t -k "" --protect-hidden=no ~/.secrets ~/secrets
+}
+
+us() {
+    truecrypt -d
+}
