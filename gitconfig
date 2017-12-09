@@ -14,6 +14,10 @@
 	ps = push
 	ffp = flow feature publish
 	fff = flow feature finish
+	graph = log --all --decorate --oneline --graph
 [core]
 	autocrlf = input
-	excludesfile = /home/vp/.gitignore
+	excludesfile = ~/.gitignore
+[ghq]
+	root = ~/go/src
+

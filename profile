@@ -22,8 +22,7 @@ if [ -d "$HOME/bin" ] ; then
 fi
 
 export GOPATH=/opt/go:$HOME/go
-
-export PATH="$PATH:$GOPATH/bin:/usr/local/go/bin"
+export PATH="$PATH:/opt/go/bin:/usr/local/go/bin"
 
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
