@@ -145,3 +145,4 @@ j() {
     fi
 }
 
+alias zaplog="jq '\"\", \"=\" * 80, \"\", \"ts: \" + (.ts | todate), \"msg: \" + .msg, \"\", .stacktrace' -r"

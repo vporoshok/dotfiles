@@ -81,6 +81,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Aliases
     alias cpv="rsync -poghb --backup-dir=/tmp/rsync -e /dev/null --progress --"
+    alias zaplog="jq '\"\", \"=\" * 80, \"\", \"ts: \" + (.ts | todate), \"msg: \" + .msg, \"\", .stacktrace' -r"
 
 # Mac custom
 if [[ "$(uname -s)" == "Darwin" ]]; then
