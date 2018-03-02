@@ -1,0 +1,147 @@
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH=/home/vp/.oh-my-zsh
+
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+#ZSH_THEME="bira"
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+    asdf
+    colorize
+    docker docker-compose
+    git git-extras git-flow
+    golang
+    history-substring-search
+    httpie
+    kubectl
+    pass
+    pip pyenv
+    postgres
+    tmux
+)
+
+fpath=(~/.zsh/completion $fpath)
+autoload -Uz compinit && compinit -i
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/dsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+setopt prompt_subst
+setopt noflowcontrol
+
+local return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
+
+if [[ $UID -eq 0 ]]; then
+    local user_host='%{$terminfo[bold]$fg[red]%}%n@%m%{$reset_color%}'
+else
+    local user_host='%{$terminfo[bold]$fg[green]%}%n@%m%{$reset_color%}'
+fi
+
+local current_dir='%{$terminfo[bold]$fg[blue]%} %~%{$reset_color%}'
+local git_branch='$(git_prompt_info)%{$reset_color%}'
+function __docker_machine {
+    [ $DOCKER_MACHINE_NAME ] && echo "%{$fg[cyan]%}$DOCKER_MACHINE_NAME%{$reset_color%}  "
+}
+local docker_machine='$(__docker_machine)'
+function __current_venv {
+    [ $VIRTUAL_ENV ] && echo "(`basename $VIRTUAL_ENV`)  "
+}
+local current_venv='$(__current_venv)'
+
+PROMPT="╭─${user_host} ${current_dir} ${git_branch} ${docker_machine}${current_venv}
+╰─%B$%b "
+RPS1="${return_code}"
+
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}‹"
+ZSH_THEME_GIT_PROMPT_SUFFIX="› %{$reset_color%}"
+
+NPM_PACKAGES="${HOME}/.npm-packages"
+PATH="$PATH:$NPM_PACKAGES/bin"
+export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+
+eval "$(direnv hook zsh)"
+
+mdc() {
+    mkdir -p "$@" && cd "$@"
+}
+
+j() {
+    local project_dir=$(ghq list --full-path | grep $1 | peco --select-1)
+    if [ -n "$project_dir" ]; then
+        cd $project_dir
+    fi
+}
+
