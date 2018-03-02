@@ -7,11 +7,9 @@
 - link:
     ~/.gitconfig: gitconfig
     ~/.gitignore: gitignore
-    ~/.profile:   profile
     ~/.tmux.conf: tmux.conf
     ~/.vimrc:     vimrc
     ~/.zsh:       zsh
-    ~/.zprofile:  zprofile
     ~/.zshrc:     zshrc
     ~/.zshenv:    zshenv
 

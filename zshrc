@@ -1,129 +1,127 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# PATH setup
+if [ -d "$HOME/.bin" ] ; then
+    PATH="$HOME/.bin:$PATH"
+fi
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
-# Path to your oh-my-zsh installation.
-  export ZSH=/home/vp/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
+ZSH_CUSTOM=$HOME/.zsh
+ZSH_CACHE=$ZSH_CUSTOM/cache
+ZSH_THEME="vp"
+COMPLETION_WAITING_DOTS="true"
+HIST_STAMPS="dd.mm.yyyy"
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="bira"
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker docker-compose git-flow golang httpie ng pass pip pyenv postgres tmux)
+plugins=(
+    asdf
+    brew
+    colorize
+    docker docker-compose
+    git git-extras git-flow
+    golang
+    fabric
+    history-substring-search
+    httpie
+    ng
+    pass
+    pip pyenv
+    postgres
+    tmux
+)
 
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit && compinit -i
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-# export MANPATH="/usr/local/man:$MANPATH"
+# Set important shell variables
+    export EDITOR=vim                           # Set default editor
+    export PAGER=less                           # Set default pager
+    export LESS="-R"                            # Set the default options for less
+    export LANG="en_US.UTF-8"                   # I'm not sure who looks at this, but I know it's good to set in general
+    export LC_CTYPE=UTF-8
+    export LC_ALL=en_US.UTF-8
+    export COPYFILE_DISABLE=1                   # Prevent mac copy / tar and more actions with ._* files
+    export VIRTUAL_ENV_DISABLE_PROMPT=1         # Hide virtualenv from standart prompt position (see theme)
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# Misc
+    setopt ZLE                                  # Enable the ZLE line editor, which is default behavior, but to be sure
+    declare -U path                             # prevent duplicate entries in path
+    LESSHISTFILE="/dev/null"                    # Prevent the less hist file from being made, I don't want it
+    umask 002                                   # Default permissions for new files, subract from 777 to understand
+    setopt NO_BEEP                              # Disable beeps
+    setopt AUTO_CD                              # Sends cd commands without the need for 'cd'
+    setopt MULTI_OS                             # Can pipe to mulitple outputs
+    unsetopt NO_HUP                             # Kill all child processes when we exit, don't leave them running
+    setopt INTERACTIVE_COMMENTS                 # Allows comments in interactive shell.
+    setopt RC_EXPAND_PARAM                      # Abc{$cool}efg where $cool is an array surrounds all array variables individually
+    unsetopt FLOW_CONTROL                       # Ctrl+S and Ctrl+Q usually disable/enable tty input. This disables those inputs
+    setopt LONG_LIST_JOBS                       # List jobs in the long format by default. (I don't know what this does but it sounds good)
+    setopt vi                                   # Make the shell act like vi if i hit escape
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# ZSH History
+    alias history='fc -fl 1'
+    HISTFILE=$ZSH_CACHE/history                 # Keep our home directory neat by keeping the histfile somewhere else
+    SAVEHIST=10000                              # Big history
+    HISTSIZE=10000                              # Big history
+    setopt EXTENDED_HISTORY                     # Include more information about when the command was executed, etc
+    setopt APPEND_HISTORY                       # Allow multiple terminal sessions to all append to one zsh command history
+    setopt HIST_FIND_NO_DUPS                    # When searching history don't display results already cycled through twice
+    setopt HIST_EXPIRE_DUPS_FIRST               # When duplicates are entered, get rid of the duplicates first when we hit $HISTSIZE
+    setopt HIST_IGNORE_SPACE                    # Don't enter commands into history if they start with a space
+    setopt HIST_VERIFY                          # makes history substitution commands a bit nicer. I don't fully understand
+    setopt SHARE_HISTORY                        # Shares history across multiple zsh sessions, in real time
+    setopt HIST_IGNORE_DUPS                     # Do not write events to history that are duplicates of the immediately previous event
+    setopt INC_APPEND_HISTORY                   # Add commands to history as they are typed, don't wait until shell exit
+    setopt HIST_REDUCE_BLANKS                   # Remove extra blanks from each command line being added to history
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# Third-part sources
+    eval "$(direnv hook zsh)"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+# Aliases
+    alias cpv="rsync -poghb --backup-dir=/tmp/rsync -e /dev/null --progress --"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-setopt prompt_subst
-
-local return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
-
-if [[ $UID -eq 0 ]]; then
-    local user_host='%{$terminfo[bold]$fg[red]%}%n@%m%{$reset_color%}'
-else
-    local user_host='%{$terminfo[bold]$fg[green]%}%n@%m%{$reset_color%}'
+# Mac custom
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    alias curl=curlish
 fi
 
-local current_dir='%{$terminfo[bold]$fg[blue]%} %~%{$reset_color%}'
-local git_branch='$(git_prompt_info)%{$reset_color%}'
-function __docker_machine {
-    [ $DOCKER_MACHINE_NAME ] && echo "%{$fg[cyan]%}$DOCKER_MACHINE_NAME%{$reset_color%}  "
-}
-local docker_machine='$(__docker_machine)'
-function __current_venv {
-    [ $VIRTUAL_ENV ] && echo "(`basename $VIRTUAL_ENV`)  "
-}
-local current_venv='$(__current_venv)'
+# Functions
 
-PROMPT="╭─${user_host} ${current_dir} ${git_branch} ${docker_machine}${current_venv}
-╰─%B$%b "
-RPS1="${return_code}"
-
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}‹"
-ZSH_THEME_GIT_PROMPT_SUFFIX="› %{$reset_color%}"
-
-NPM_PACKAGES="${HOME}/.npm-packages"
-PATH="$PATH:$NPM_PACKAGES/bin"
-export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-
-secrets() {
-    truecrypt -t -k "" --protect-hidden=no ~/.secrets ~/secrets
+# Make a directory and cd into it
+function mcd {
+	mkdir -p $1
+	cd $1
 }
 
-us() {
-    truecrypt -d
+# Extract lines between given lines by patterns or line numbers
+function xtr {
+    local a
+    local b
+    if [[ -z $1 ]]; then
+        echo xtr: too few argument >&2
+        return 1
+    elif [[ $1 =~ '^[0-9]+$' ]]; then
+        a=$1
+    else
+        a="/$1/"
+    fi
+    if [[ -z $2 ]]; then
+        b='$'
+    elif [[ $2 =~ '^[0-9]+$' ]]; then
+        b = $2
+    else
+        b="/$2/"
+    fi
+
+    sed -n "$a,${b}p"
+}
+
+# Jump to project
+function j {
+    local project_dir=$(ghq list --full-path | grep $1 | peco --select-1)
+    if [ -n "$project_dir" ]; then
+        cd $project_dir
+    fi
 }

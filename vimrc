@@ -12,10 +12,11 @@ Bundle 'flazz/vim-colorschemes'
 Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 Bundle 'toggle_comment'
-Bundle 'python.vim'
 Bundle 'conque-shell'
 Bundle 'fatih/vim-go'
 Bundle 'majutsushi/tagbar'
+Bundle 'lambdalisue/vim-pyenv'
+Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
 filetype plugin indent on
@@ -24,6 +25,9 @@ syntax on
 
 let g:airline_fugitive=1
 let g:airline_powerline_fonts=1
+
+let g:ycm_python_binary_path='python'
+let g:ycm_autoclose_preview_window_after_completion=1
 
 set lz
 set number
@@ -83,3 +87,4 @@ au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
+
