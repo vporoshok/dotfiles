@@ -21,6 +21,7 @@ plugins=(
     fabric
     history-substring-search
     httpie
+    kubectl
     ng
     pass
     pip pyenv
@@ -78,6 +79,8 @@ source $ZSH/oh-my-zsh.sh
 
 # Third-part sources
     eval "$(direnv hook zsh)"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
 
 # Aliases
     alias cpv="rsync -poghb --backup-dir=/tmp/rsync -e /dev/null --progress --"

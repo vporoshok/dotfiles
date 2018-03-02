@@ -6,7 +6,7 @@
 
 - link:
     ~/.gitconfig: gitconfig
-    ~/.gitignore: gitignore
+    ~/.git:       git
     ~/.tmux.conf: tmux.conf
     ~/.vimrc:     vimrc
     ~/.zsh:       zsh

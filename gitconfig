@@ -4,7 +4,7 @@
 	username = vporoshok
 [core]
 	autocrlf = input
-	excludesfile = ~/.gitignore
+	excludesfile = ~/.git/ignore
 [push]
 	default = current
 [pretty]
