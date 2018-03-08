@@ -1,35 +1,36 @@
 [user]
-	name = Evgeniy Bastrykov
-	email = vporoshok@gmail.com
-	username = vporoshok
+    name = Evgeniy Bastrykov
+    email = vporoshok@gmail.com
+    username = vporoshok
 [core]
-	autocrlf = input
-	excludesfile = ~/.git/ignore
+    autocrlf = input
+    excludesfile = ~/.git/ignore
 [push]
-	default = current
+    default = current
 [pretty]
-	default = "%C(auto)%h%C(reset) -%C(auto)%d%C(reset) %C(auto)%s%C(reset) %C(dim white)- %ad / %an <%ae>%C(reset)"
+    default = "%C(auto)%h%C(reset) -%C(auto)%d%C(reset) %C(auto)%s%C(reset) %C(dim white)- %ad / %an <%ae>%C(reset)"
 [rebase]
-	autosquash = true
-	autostash = true
+    autosquash = true
+    autostash = true
 [rerere]
-	enabled = true
-	autoupdate = true
+    enabled = true
+    autoupdate = true
 [alias]
-	co = checkout
-	br = branch
-	ci = commit
-	st = status
-	unstage = reset HEAD --
-	last = log -1 HEAD
-	ffs = flow feature start
-	ps = push
-	ffp = flow feature publish
-	fff = flow feature finish
-	graph = log --all --graph --pretty=default
-	delete-merged = "!git br --merged | grep -v '\\(\\*\\|develop\\|master\\)' | xargs -r -- git br -d"
-	up = "!git fetch -putf && git fetch origin develop:develop && git delete-merged"
-	dev = "!git co develop && git fetch -putf && git pull && git delete-merged"
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+    cp = cherry-pick
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    ffs = flow feature start
+    ps = push
+    ffp = flow feature publish
+    fff = flow feature finish
+    graph = log --all --graph --pretty=default
+    delete-merged = "!git br --merged | grep -v '\\(\\*\\|develop\\|master\\)' | xargs -r -- git br -d"
+    up = "!git fetch -putf && git fetch origin develop:develop && git delete-merged"
+    dev = "!git co develop && git fetch -putf && git pull && git delete-merged"
 [ghq]
-	root = ~/go/src
+    root = ~/go/src
 
