@@ -28,7 +28,7 @@
     ffp = flow feature publish
     fff = flow feature finish
     graph = log --all --graph --pretty=default
-    delete-merged = "!git br --merged | grep -v '\\(\\*\\|develop\\|master\\)' | xargs -r -- git br -d"
+    delete-merged = "!git br --merged | grep -v '\\(\\*\\|develop\\|master\\)' | xargs -- git br -d"
     up = "!git fetch -putf && git fetch origin develop:develop && git delete-merged"
     dev = "!git co develop && git fetch -putf && git pull && git delete-merged"
 [ghq]
