@@ -31,6 +31,7 @@
     delete-merged = "!git br --merged | grep -v '\\(\\*\\|develop\\|master\\)' | xargs -r -- git br -d"
     up = "!git fetch -putf && git fetch origin develop:develop && git delete-merged"
     dev = "!git co develop && git fetch -putf && git pull && git delete-merged"
+    amend = commit --amend --no-edit
 [ghq]
     root = ~/go/src
 

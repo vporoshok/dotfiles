@@ -13,6 +13,7 @@ HIST_STAMPS="dd.mm.yyyy"
 
 plugins=(
     asdf
+    aws
     brew
     colorize
     docker docker-compose
@@ -81,10 +82,17 @@ source $ZSH/oh-my-zsh.sh
     eval "$(direnv hook zsh)"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
+    eval "$(minikube completion zsh)"
 
 # Aliases
+    alias cat=bat
     alias cpv="rsync -poghb --backup-dir=/tmp/rsync -e /dev/null --progress --"
+    alias tx="tmux new -s"
     alias zaplog="jq '\"\", \"=\" * 80, \"\", \"ts: \" + (.ts | todate), \"msg: \" + .msg, \"\", .stacktrace' -r"
+
+    if [[ -n "$(which bat)" ]]; then
+        alias cat=bat
+    fi
 
 # Mac custom
 if [[ "$(uname -s)" == "Darwin" ]]; then
@@ -97,6 +105,11 @@ fi
 function mcd {
 	mkdir -p $1
 	cd $1
+}
+
+# Grep env
+function genv {
+    env | grep -i $@
 }
 
 # Extract lines between given lines by patterns or line numbers
@@ -129,3 +142,31 @@ function j {
         cd $project_dir
     fi
 }
+
+# Get code of process by id
+function bpcode {
+    http $ELASTIC/$COMPANY@system:bp_templates/item/$1 | jq ._source.code -r
+}
+
+# Cleanup instances of process by id
+function bpclear {
+    jarg 'query[match_all]:={}' | http post $ELASTIC/$COMPANY@global:_process_`bpcode $1`/_delete_by_query
+}
+
+# Get instances of process by id
+function bpget {
+    http $ELASTIC/$COMPANY@global:_process_`bpcode $1`/_search | jq .
+}
+
+function taskclear {
+    jarg 'query[match_all]:={}' | http post $ELASTIC/$COMPANY@system:tasks/_delete_by_query
+}
+
+function set_admin_namespace {
+    sed -i "/# admin namespace/{n;s/namespace: .*/namespace: $1/}" ~/.kube/config
+}
+
+function get_services_versions {
+    kubectl --context admin --namespace $1 get pod -o json | jq '.items[].spec.containers[].image | select(. | startswith("dreg"))'
+}
+
