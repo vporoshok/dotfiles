@@ -25,7 +25,7 @@ plugins=(
     kubectl
     ng
     pass
-    pip pyenv
+    pip
     postgres
     tmux
 )
@@ -85,10 +85,10 @@ source $ZSH/oh-my-zsh.sh
     eval "$(minikube completion zsh)"
 
 # Aliases
-    alias cat=bat
     alias cpv="rsync -poghb --backup-dir=/tmp/rsync -e /dev/null --progress --"
     alias tx="tmux new -s"
     alias zaplog="jq '\"\", \"=\" * 80, \"\", \"ts: \" + (.ts | todate), \"msg: \" + .msg, \"\", .stacktrace' -r"
+    alias pe="env | grep"
 
     if [[ -n "$(which bat)" ]]; then
         alias cat=bat
