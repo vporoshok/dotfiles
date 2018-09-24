@@ -82,7 +82,9 @@ source $ZSH/oh-my-zsh.sh
     eval "$(direnv hook zsh)"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
-    eval "$(minikube completion zsh)"
+    if [[ -n "$(which minikube)" ]]; then
+        eval "$(minikube completion zsh)"
+    fi
 
 # Aliases
     alias cpv="rsync -poghb --backup-dir=/tmp/rsync -e /dev/null --progress --"
