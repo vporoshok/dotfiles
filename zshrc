@@ -82,7 +82,7 @@ source $ZSH/oh-my-zsh.sh
     eval "$(direnv hook zsh)"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
-    if [ -n "$(which minikube)" ]; then
+    if [ -f "$(which minikube)" ]; then
         eval "$(minikube completion zsh)"
     fi
 
@@ -92,7 +92,7 @@ source $ZSH/oh-my-zsh.sh
     alias zaplog="jq '\"\", \"=\" * 80, \"\", \"ts: \" + (.ts | todate), \"msg: \" + .msg, \"\", .stacktrace' -r"
     alias pe="env | grep"
 
-    if [ -n "$(which bat)" ]; then
+    if [ -f "$(which bat)" ]; then
         alias cat=bat
     fi
 
