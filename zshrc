@@ -11,6 +11,11 @@ ZSH_THEME="vp"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="dd.mm.yyyy"
 
+k_context="$(kubectl config current-context)"
+K_CONTEXT="$k_context"
+k_namespace=$(kubectl config view -o jsonpath="{.contexts[?(@.name==\"$K_CONTEXT\")].context.namespace}")
+K_NAMESPACE=$(test -z $k_namespace && echo "kube-system" || echo $k_namespace)
+
 plugins=(
     asdf
     aws
@@ -27,6 +32,7 @@ plugins=(
     pass
     pip pyenv
     postgres
+    symfony
     tmux
 )
 
@@ -83,20 +89,27 @@ source $ZSH/oh-my-zsh.sh
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
     eval "$(minikube completion zsh)"
+    eval "$(helm completion zsh)"
+    . $HOME/.asdf/asdf.sh
+    . $HOME/.asdf/completions/asdf.bash
 
 # Aliases
-    alias cat=bat
     alias cpv="rsync -poghb --backup-dir=/tmp/rsync -e /dev/null --progress --"
     alias tx="tmux new -s"
     alias zaplog="jq '\"\", \"=\" * 80, \"\", \"ts: \" + (.ts | todate), \"msg: \" + .msg, \"\", .stacktrace' -r"
 
-    if [[ -n "$(which bat)" ]]; then
-        alias cat=bat
-    fi
-
 # Mac custom
 if [[ "$(uname -s)" == "Darwin" ]]; then
     alias curl=curlish
+fi
+
+# Linux custom
+if [[ "$(uname -s)" == "Linux" ]]; then
+    alias pbcopy='xclip -selection clipboard'
+    alias pbpaste='xclip -selection clipboard -o'
+    function open {
+        nautilus $1 &> /dev/null &
+    }
 fi
 
 # Functions
@@ -140,7 +153,18 @@ function j {
     local project_dir=$(ghq list --full-path | grep $1 | peco --select-1)
     if [ -n "$project_dir" ]; then
         cd $project_dir
+        direnv reload
     fi
+}
+
+# Make standup review
+function standup {
+    standup.py $@ >> ~/standup && vim ~/standup && pbcopy < ~/standup
+}
+
+# Port-forward over ssh
+function ssh-forward {
+    ssh -nNT -L ${2}:localhost:$2 $1
 }
 
 # Get code of process by id
@@ -167,6 +191,6 @@ function set_admin_namespace {
 }
 
 function get_services_versions {
-    kubectl --context admin --namespace $1 get pod -o json | jq '.items[].spec.containers[].image | select(. | startswith("dreg"))'
+    kubectl --context elma365-dev --namespace $1 get pod -o json | jq '.items[].spec.containers[].image | select(. | startswith("dreg"))'
 }
 

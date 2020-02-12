@@ -2,6 +2,7 @@
     name = Evgeniy Bastrykov
     email = vporoshok@gmail.com
     username = vporoshok
+    signingkey = BB000FFB
 [core]
     autocrlf = input
     excludesfile = ~/.git/ignore
@@ -22,7 +23,7 @@
     st = status
     cp = cherry-pick
     unstage = reset HEAD --
-    last = log -1 HEAD
+    last = show --name-status
     ffs = flow feature start
     ps = push
     ffp = flow feature publish
@@ -32,6 +33,13 @@
     up = "!git fetch -putf && git fetch origin develop:develop && git delete-merged"
     dev = "!git co develop && git fetch -putf && git pull && git delete-merged"
     amend = commit --amend --no-edit
+    edit = commit --amend
+    squash = "!git reset --soft $0 && git ci"
+    fl = log --diff-filter=A --
+    forget = rm --cached -r --
+    drop = reset --hard HEAD
 [ghq]
     root = ~/go/src
 
+[url "git@git.elewise.com:"]
+    insteadOf = https://git.elewise.com/

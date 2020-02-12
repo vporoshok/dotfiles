@@ -72,6 +72,9 @@ nmap <F3> :set hlsearch!<CR>
 
 nmap <silent> <leader>o :Explore<CR>
 nmap <F8> :TagbarToggle<CR>
+" Replace a word with yanked text
+" http://vim.wikia.com/wiki/Replace_a_word_with_yanked_text
+xnoremap p "_dP
 
 " Commenting blocks of code
 autocmd FileType c,cpp,java,scala           let b:comment_leader = '// '

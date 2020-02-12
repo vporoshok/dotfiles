@@ -21,7 +21,12 @@ function __current_venv {
 }
 local current_venv='$(__current_venv)'
 
-PROMPT="╭─${user_host} ${current_dir} ${git_branch} ${docker_machine}${current_venv}
+function __telepresence {
+    [ $TELEPRESENCE_CONTAINER ] && echo "%{$fg[cyan]%}$TELEPRESENCE_CONTAINER_NAMESPACE/$TELEPRESENCE_CONTAINER%{$reset_color%}  "
+}
+local telepresence='$(__telepresence)'
+
+PROMPT="╭─${user_host} ${current_dir} ${git_branch} ${docker_machine}${current_venv}${telepresence}
 ╰─%B$%b "
 RPS1="${return_code}"
 
