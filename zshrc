@@ -30,7 +30,7 @@ plugins=(
     kubectl
     ng
     pass
-    pip pyenv
+    pip
     postgres
     symfony
     tmux
@@ -88,15 +88,20 @@ source $ZSH/oh-my-zsh.sh
     eval "$(direnv hook zsh)"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
-    eval "$(minikube completion zsh)"
-    eval "$(helm completion zsh)"
     . $HOME/.asdf/asdf.sh
     . $HOME/.asdf/completions/asdf.bash
+    if [ -f "$(which minikube)" ]; then
+        eval "$(minikube completion zsh)"
+    fi
+    if [ -f "$(which helm)" ]; then
+        eval "$(helm completion zsh)"
+    fi
 
 # Aliases
     alias cpv="rsync -poghb --backup-dir=/tmp/rsync -e /dev/null --progress --"
     alias tx="tmux new -s"
     alias zaplog="jq '\"\", \"=\" * 80, \"\", \"ts: \" + (.ts | todate), \"msg: \" + .msg, \"\", .stacktrace' -r"
+    alias pe="env | grep"
 
 # Mac custom
 if [[ "$(uname -s)" == "Darwin" ]]; then
